@@ -1,2 +1,2 @@
 # Python_sniffer
-This simple python class provides a network sniffer. It uses the scapy library.
+This simple python class provides a network sniffer. It uses the scapy libraries.
