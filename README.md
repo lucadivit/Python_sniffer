@@ -29,3 +29,5 @@ sniffer.start()
 # Some instruction
 sniffer.stop()
 ```
+### Prerequisites
+This class is written with Python3. Then you need to install scapy in python3 enviroment and run script with sudo command.
