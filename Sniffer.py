@@ -8,7 +8,6 @@ class Sniffer(Thread):
 
     def __init__(self, interface, callback_prn=None, callback_stop=None, stop_escape_raw="stop_sniff", monitor=False, verbose=False):
         super().__init__()
-        self.mtu = mtu
         self.interface = interface
         self.stop_escape_raw = stop_escape_raw
         self.callback_stop = callback_stop
