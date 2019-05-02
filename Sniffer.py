@@ -6,7 +6,7 @@ import os
 
 class Sniffer(Thread):
 
-    def __init__(self, interface, callback_prn=None, callback_stop=None, stop_escape_raw="stop_sniff", mtu=2500, monitor=False, verbose=False):
+    def __init__(self, interface, callback_prn=None, callback_stop=None, stop_escape_raw="stop_sniff", monitor=False, verbose=False):
         super().__init__()
         self.mtu = mtu
         self.interface = interface
@@ -23,7 +23,6 @@ class Sniffer(Thread):
 
     def run(self):
         print("\n" + "Sniffer Avviato" + "\n")
-        os.system('sudo ifconfig ' + self.get_interface() + ' mtu ' + str(self.get_mtu()))
         try:
             sniff(iface=self.get_interface(), prn=self.sniffing_callback, store=0,  stop_filter=self.stop_callback, monitor=self.get_monitor())#lambda x: self.stop_sniffer_flag.isSet()
         except:
@@ -47,13 +46,6 @@ class Sniffer(Thread):
 
     def get_monitor(self):
         return self.monitor
-
-    def set_mtu(self, mtu):
-        self.mtu = mtu
-        os.system('sudo ifconfig ' + self.get_interface() + ' mtu ' + str(self.get_mtu()))
-
-    def get_mtu(self):
-        return self.mtu
 
     def set_stop_escape_raw(self, stop_escape_raw):
         self.stop_escape_raw = stop_escape_raw
