@@ -40,6 +40,9 @@ class Iface:
             raise
         return self.mtu
     
+    def get_default_mtu(self):
+        return self.default_mtu
+
     def restore_mtu(self):
         self.set_mtu(self.default_mtu)
 
