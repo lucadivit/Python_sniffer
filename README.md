@@ -21,8 +21,6 @@ sniffer.stop()
 ```
 The constructor accepts also callback functions then you can use the scapy methods on sniffed packet:
 ```
-from Sniffer import Sniffer
-
 def print_packet(*args):
   print("This message is printed every time that sniffer intercepts a packet.")
   args.show()
