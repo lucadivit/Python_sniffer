@@ -8,6 +8,8 @@ class Iface:
     SIOCGIFMTU = 0x8921
 
     SIOCSIFMTU = 0x8922
+    
+    default_mtu = 1500
 
     def __init__(self, ifname):
 
@@ -37,6 +39,9 @@ class Iface:
             print('socket ioctl call failed: {0}'.format(s))
             raise
         return self.mtu
+    
+    def restore_mtu(self):
+        self.set_mtu(self.default_mtu)
 
     def get_interface_name(self):
         return self.ifname
