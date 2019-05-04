@@ -7,8 +7,14 @@ The scapy's method "sniff" has the characteristic that it locks the execution of
 ### Usage
 ```
 from Sniffer import Sniffer
+from Iface import Iface
 
-sniffer = Sniffer('wlan0')
+iface = Iface('wlan0')
+
+# This is an optional command
+iface.set_mtu(2500)
+
+sniffer = Sniffer(iface)
 sniffer.start()
 # Some instruction
 sniffer.stop()
@@ -24,7 +30,8 @@ def print_packet(*args):
 def finished(*args):
   print("This message is printed when you stop the sniffer.")
 
-sniffer = Sniffer('wlan0', callback_prn=print_packet, callback_stop=finished)
+iface = Iface('wlan0')
+sniffer = Sniffer(iface, callback_prn=print_packet, callback_stop=finished)
 sniffer.start()
 # Some instruction
 sniffer.stop()
@@ -34,9 +41,10 @@ This class is written with Python3. Then you need to install scapy in python3 en
 ### Other
 You can have only one instance of sniffer. At now, if you call .stop method you have to create another instance of sniffer if you want re-run it.
 ```
-sniffer = Sniffer('wlan0')
+iface = Iface('wlan0')
+sniffer = Sniffer(iface)
 sniffer.start()
 sniffer.stop()
-sniffer = Sniffer('wlan0')
+sniffer = Sniffer(iface)
 sniffer.start()
 ```
