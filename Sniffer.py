@@ -17,6 +17,7 @@ class Sniffer(Thread):
         self.is_stopped = False
         self.monitor = monitor
         self.verbose = verbose
+        self.is_started = False
         self.stop_sniffer_flag = Event()
 
     def start(self):
@@ -26,9 +27,11 @@ class Sniffer(Thread):
         self.check_mtu()
         try:
             print("\n" + "Sniffer Avviato" + "\n")
+            self.set_started_flag(True)
+            self.set_stopped_flag(False)
             sniff(iface=self.get_interface().get_interface_name(), prn=self.sniffing_callback, store=0,  stop_filter=self.stop_callback, monitor=self.get_monitor())#lambda x: self.stop_sniffer_flag.isSet()
-        except:
-            print("\n" + "Errore! Provare a disabilitare la monitor mode" + "\n")
+        except Exception as e:
+            print(e)
         return
 
     def check_mtu(self):
@@ -38,7 +41,13 @@ class Sniffer(Thread):
         else:
             pass
         return
+        
+    def set_started_flag(self, bool_flag):
+        self.is_started = bool_flag
 
+    def get_started_flag(self):
+        return self.is_started
+    
     def set_stopped_flag(self, bool_stop):
         self.is_stopped = bool_stop
 
@@ -78,6 +87,8 @@ class Sniffer(Thread):
     def stop(self):
         self.stop_sniffer_flag.set()
         sendp(IP(src="127.0.0.1", dst="127.0.0.1")/self.get_stop_escape_raw(), verbose=0)
+        self.set_stopped_flag(True)
+        self.set_started_flag(False)
 
     def set_verbose(self, val):
         self.verbose=val
@@ -90,7 +101,7 @@ class Sniffer(Thread):
             pass
         else:
             if self.callback_prn is not None:
-                self.callback_prn(args)
+                self.callback_prn(args[0])
             if self.get_verbose() is True:
                 print("\n" + "Pkt sniffato" + "\n")
 
@@ -108,8 +119,7 @@ class Sniffer(Thread):
     def stop_callback(self, *args):
         if self.is_last_packet(args[0]) is True:
             if self.callback_stop is not None:
-                self.callback_stop(args)
-            self.set_stopped_flag(True)
+                self.callback_stop(args[0])
             print("\n" + "Sniffer Terminato" + "\n")
             return True
         else:
