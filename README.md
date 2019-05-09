@@ -21,15 +21,17 @@ sniffer.stop()
 ```
 The constructor accepts also callback functions then you can use the scapy methods on sniffed packet:
 ```
-def print_packet(*args):
+def print_packet(*args, **kwargs):
   print("This message is printed every time that sniffer intercepts a packet.")
+  print(kwargs)
   args[0].show()
 
-def finished(*args):
+def finished(*args, **kwargs):
   print("This message is printed when you stop the sniffer.")
 
 iface = Iface('wlan0')
-sniffer = Sniffer(iface, callback_prn=print_packet, callback_stop=finished)
+prn_kwargs = {'var': 0}
+sniffer = Sniffer(iface, callback_prn=print_packet, callback_stop=finished, callback_prn_kwargs=prn_kwargs)
 sniffer.start()
 while(sniffer.get_started_flag() is False):
     pass
