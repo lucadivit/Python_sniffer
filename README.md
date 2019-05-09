@@ -23,7 +23,7 @@ The constructor accepts also callback functions then you can use the scapy metho
 ```
 def print_packet(*args):
   print("This message is printed every time that sniffer intercepts a packet.")
-  args.show()
+  args[0].show()
 
 def finished(*args):
   print("This message is printed when you stop the sniffer.")
@@ -31,6 +31,8 @@ def finished(*args):
 iface = Iface('wlan0')
 sniffer = Sniffer(iface, callback_prn=print_packet, callback_stop=finished)
 sniffer.start()
+while(sniffer.get_started_flag() is False):
+    pass
 # Some instruction
 sniffer.stop()
 ```
